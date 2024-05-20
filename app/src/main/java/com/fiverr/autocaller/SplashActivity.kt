@@ -62,5 +62,6 @@ class SplashActivity : AppCompatActivity() {
     private fun openMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
+        //test
     }
 }
