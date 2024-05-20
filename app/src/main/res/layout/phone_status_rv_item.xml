@@ -13,11 +13,12 @@
 
         <TextView
             android:id="@+id/phoneDTv"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="+9177123456"
+            app:layout_constraintEnd_toStartOf="@+id/sendMsgIv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,9 +26,10 @@
             android:id="@+id/statusDTv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="16dp"
-            android:text=""
             android:layout_marginBottom="10dp"
+            android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/phoneDTv"
@@ -52,6 +54,16 @@
             app:layout_constraintEnd_toStartOf="@+id/countStatTv"
             app:layout_constraintTop_toTopOf="@+id/countStatTv"
             app:srcCompat="@drawable/ic_edit" />
+
+        <ImageView
+            android:id="@+id/sendMsgIv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/noteEditIv"
+            app:layout_constraintEnd_toStartOf="@+id/noteEditIv"
+            app:layout_constraintTop_toTopOf="@+id/noteEditIv"
+            app:srcCompat="@drawable/ic_messages" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

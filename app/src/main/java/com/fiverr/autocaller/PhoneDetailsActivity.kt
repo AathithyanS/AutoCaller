@@ -2,7 +2,6 @@ package com.fiverr.autocaller
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.fiverr.autocaller.database.DatabaseHelper
 import com.fiverr.autocaller.databinding.ActivityPhoneDetailsBinding
 import java.text.SimpleDateFormat
@@ -28,7 +27,7 @@ class PhoneDetailsActivity : AppCompatActivity() {
             binding.phoneNumDeTv.setText(data.phone)
             binding.nameDeTv.setText(data.name)
             binding.lastNameDeTv.setText(data.lastName)
-            val status = if (data.status.isEmpty()) "N/A" else formatDate(data.calledTime.toLong())
+            val status = if (data.note.isEmpty()) "N/A" else formatDate(data.calledTime.toLong())
             binding.statusDeTv.setText(status)
             val date = if (data.calledTime.isEmpty()) "N/A" else formatDate(data.calledTime.toLong())
             binding.dateDeTv.setText(date)

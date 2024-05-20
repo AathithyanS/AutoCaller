@@ -24,15 +24,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="25dp"
             android:ems="10"
+            android:hint="Enter button name"
             android:inputType="text"
-            android:hint="Enter your custom text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
         <Button
             android:id="@+id/cSaveBtn"
@@ -45,7 +45,7 @@
             app:layout_constraintEnd_toStartOf="@+id/cCancelBtn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cBtnEt" />
+            app:layout_constraintTop_toBottomOf="@+id/cMessageEt" />
 
         <Button
             android:id="@+id/cCancelBtn"
@@ -57,6 +57,54 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/cSaveBtn"
             app:layout_constraintTop_toTopOf="@+id/cSaveBtn" />
+
+        <TextView
+            android:id="@+id/noteColorTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Note color: "
+            app:layout_constraintStart_toStartOf="@+id/cBtnEt"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+        <View
+            android:id="@+id/colorView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/defaultColor"
+            app:layout_constraintBottom_toBottomOf="@+id/noteColorTv"
+            app:layout_constraintStart_toEndOf="@+id/noteColorTv"
+            app:layout_constraintTop_toTopOf="@+id/noteColorTv" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:text="Default color (if it's default color background  color should be blank): "
+            app:layout_constraintEnd_toStartOf="@+id/defaultColorView"
+            app:layout_constraintTop_toTopOf="@+id/noteColorTv" />
+
+        <View
+            android:id="@+id/defaultColorView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@color/defaultColor"
+            app:layout_constraintEnd_toEndOf="@+id/cBtnEt"
+            app:layout_constraintTop_toTopOf="@+id/textView9" />
+
+        <EditText
+            android:id="@+id/cMessageEt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ems="10"
+            android:hint="Enter your message"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="@+id/cBtnEt"
+            app:layout_constraintStart_toStartOf="@+id/cBtnEt"
+            app:layout_constraintTop_toBottomOf="@+id/cBtnEt" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

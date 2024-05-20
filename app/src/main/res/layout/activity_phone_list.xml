@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Phone List"
-        app:layout_constraintBottom_toBottomOf="@+id/exportBtn"
+        app:layout_constraintBottom_toBottomOf="@+id/moreIv"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/exportBtn" />
+        app:layout_constraintTop_toTopOf="@+id/moreIv" />
 
     <Button
         android:id="@+id/startBtn"
@@ -52,12 +52,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/answeredcountTv" />
 
-    <Button
-        android:id="@+id/exportBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/moreIv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginTop="16dp"
-        android:text="Export"
+        android:src="@drawable/ic_more"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,9 +67,9 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/exportBtn"
-        app:layout_constraintEnd_toStartOf="@+id/exportBtn"
-        app:layout_constraintTop_toTopOf="@+id/exportBtn"
+        app:layout_constraintBottom_toBottomOf="@+id/moreIv"
+        app:layout_constraintEnd_toStartOf="@+id/moreIv"
+        app:layout_constraintTop_toTopOf="@+id/moreIv"
         app:srcCompat="@drawable/ic_timmer" />
 
     <ImageView
@@ -89,4 +90,14 @@
         android:text="Answered : 0"
         app:layout_constraintStart_toStartOf="@+id/countTv"
         app:layout_constraintTop_toBottomOf="@+id/countTv" />
+
+    <TextView
+        android:id="@+id/leadsCountTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:text="Leads count: 0"
+        app:layout_constraintBottom_toBottomOf="@+id/answeredcountTv"
+        app:layout_constraintStart_toEndOf="@+id/answeredcountTv"
+        app:layout_constraintTop_toTopOf="@+id/answeredcountTv" />
 </androidx.constraintlayout.widget.ConstraintLayout>
