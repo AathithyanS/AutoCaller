@@ -63,5 +63,10 @@ class SplashActivity : AppCompatActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
         //test
+
+        //test 2
+
+        //test 3
+
     }
 }
