@@ -86,7 +86,7 @@ class PhoneListActivity : AppCompatActivity() {
             setupButton()
         }
 
-        binding.timerIv.setOnClickListener {
+        binding.timmerIv.setOnClickListener {
             openTimelineDialog()
         }
 
@@ -171,6 +171,14 @@ class PhoneListActivity : AppCompatActivity() {
         val pasueBtn = processCallDialog?.findViewById<Button>(R.id.pauseBtn)
         val minimizeIv = processCallDialog?.findViewById<ImageView>(R.id.minimizeIv)
         val takeNoteSwitch = processCallDialog?.findViewById<Switch>(R.id.takeNoteSwitch)
+        val multiListTv = processCallDialog?.findViewById<TextView>(R.id.multiCallListTv)
+
+        if (Providers.isSchedule){
+            multiListTv?.visibility = View.VISIBLE
+            multiListTv?.setText("Multi list status: ${Providers.currentScheduleIndex}/${Providers.scheduler?.size}")
+        }else{
+            multiListTv?.visibility = View.GONE
+        }
 
         takeNoteSwitch!!.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -186,6 +194,9 @@ class PhoneListActivity : AppCompatActivity() {
             savePauseStatus()
             setupPasueStatus()
             CallManager.isTakeNote =  false
+            Providers.scheduler = null
+            Providers.isSchedule = false
+            Providers.currentScheduleIndex = 0
         }
 
         minimizeIv?.setOnClickListener {
@@ -211,27 +222,35 @@ class PhoneListActivity : AppCompatActivity() {
         val n2Btn = noteDialog?.findViewById<Button>(R.id.n2Btn)
         val n3Btn = noteDialog?.findViewById<Button>(R.id.n3Btn)
         val n4Btn = noteDialog?.findViewById<Button>(R.id.n4Btn)
+        val n5Btn = noteDialog?.findViewById<Button>(R.id.n5Btn)
+        val n6Btn = noteDialog?.findViewById<Button>(R.id.n6Btn)
         val noteMinIv = noteDialog?.findViewById<ImageView>(R.id.noteMinIv)
         val saveNoteBtn = noteDialog?.findViewById<Button>(R.id.saveNoteBtn)
 
         noteDialog?.show()
 
 
-        titleTv?.text = "Name: ${currPhone?.name}\nPhone: ${currPhone?.phone}\nLastname: ${currPhone?.lastName}\nAddress: ${currPhone?.address}"
+        titleTv?.text = "Name: ${currPhone?.name}\nPhone: ${currPhone?.phone}\nLastname: ${currPhone?.lastName}\nAddress: ${currPhone?.address}, ${currPhone?.suburb}, ${currPhone?.state}"
 
         n1Btn?.setText(SharedPreferenceManager.getCustomButton(this, "button1"))
         n2Btn?.setText(SharedPreferenceManager.getCustomButton(this, "button2"))
         n3Btn?.setText(SharedPreferenceManager.getCustomButton(this, "button3"))
         n4Btn?.setText(SharedPreferenceManager.getCustomButton(this, "button4"))
+        n5Btn?.setText(SharedPreferenceManager.getCustomButton(this, "button5"))
+        n6Btn?.setText(SharedPreferenceManager.getCustomButton(this, "button6"))
 
         val btn1Color = SharedPreferenceManager.getCustomButtonColor(this, "button1-color")
         val btn2Color = SharedPreferenceManager.getCustomButtonColor(this, "button2-color")
         val btn3Color = SharedPreferenceManager.getCustomButtonColor(this, "button3-color")
         val btn4Color = SharedPreferenceManager.getCustomButtonColor(this, "button4-color")
+        val btn5Color = SharedPreferenceManager.getCustomButtonColor(this, "button5-color")
+        val btn6Color = SharedPreferenceManager.getCustomButtonColor(this, "button6-color")
         n1Btn?.setBackgroundColor(btn1Color)
         n2Btn?.setBackgroundColor(btn2Color)
         n3Btn?.setBackgroundColor(btn3Color)
         n4Btn?.setBackgroundColor(btn4Color)
+        n5Btn?.setBackgroundColor(btn5Color)
+        n6Btn?.setBackgroundColor(btn6Color)
 
         n1Btn?.setOnClickListener {
             noteBtnId = "button1"
@@ -240,6 +259,8 @@ class PhoneListActivity : AppCompatActivity() {
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button2"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button3"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button6"))
             val removedText = Util.removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
             NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(this, "button1")+" "+removedText)
             NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
@@ -251,6 +272,8 @@ class PhoneListActivity : AppCompatActivity() {
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button2"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button3"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button6"))
             val removedText = Util.removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
             NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(this, "button2")+" "+removedText)
             NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
@@ -262,6 +285,8 @@ class PhoneListActivity : AppCompatActivity() {
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button2"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button3"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button6"))
             val removedText = Util.removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
             NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(this, "button3")+" "+removedText)
             NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
@@ -273,8 +298,36 @@ class PhoneListActivity : AppCompatActivity() {
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button2"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button3"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button6"))
             val removedText = Util.removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
             NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(this, "button4")+" "+removedText)
+            NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
+        }
+        n5Btn?.setOnClickListener {
+            noteBtnId = "button5"
+            val btnTextList = ArrayList<String>()
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button1"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button2"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button3"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button6"))
+            val removedText = Util.removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
+            NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(this, "button5")+" "+removedText)
+            NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
+        }
+        n6Btn?.setOnClickListener {
+            noteBtnId = "button6"
+            val btnTextList = ArrayList<String>()
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button1"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button2"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button3"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(this, "button6"))
+            val removedText = Util.removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
+            NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(this, "button6")+" "+removedText)
             NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
         }
         n1Btn?.setOnLongClickListener {
@@ -291,6 +344,14 @@ class PhoneListActivity : AppCompatActivity() {
         }
         n4Btn?.setOnLongClickListener {
             showUpdateCustomButton("button4", n4Btn, btn4Color)
+            true
+        }
+        n5Btn?.setOnLongClickListener {
+            showUpdateCustomButton("button5", n5Btn, btn4Color)
+            true
+        }
+        n6Btn?.setOnLongClickListener {
+            showUpdateCustomButton("button6", n6Btn, btn4Color)
             true
         }
 
@@ -311,9 +372,10 @@ class PhoneListActivity : AppCompatActivity() {
 
 
     fun startCalling() {
-        binding.leadsCountTv.setText("Leads count: " + dbHelper.countLeadsInFile(id.toLong()).toString())
+            binding.leadsCountTv.setText("Leads count: " + dbHelper.countLeadsInFile(id.toLong()).toString())
         Handler(Looper.getMainLooper()).postDelayed({
             updateAnsweredCount()
+
             binding.countTv.setText("Phone List (${CallManager.currentPosition+1}/${listOfPhone.size})")
             Log.d("currPosition", "startCalling: ${CallManager.currentPosition}")
             if (CallManager.currentPosition < (listOfPhone.size)){
@@ -323,11 +385,12 @@ class PhoneListActivity : AppCompatActivity() {
                 phoneTv?.text = "Name: ${currPhone?.name}\n" +
                         "Phone: ${currPhone?.phone}\n" +
                         "Lastname: ${currPhone?.lastName}\n" +
-                        "Address: ${currPhone?.address}"
+                        "Address: ${currPhone?.address}, ${currPhone?.suburb}, ${currPhone?.state}"
                 currPhNa = "${phone.phone} / ${phone.name}"
                 listOfPhone = dbHelper.getPhoneAccountsByFileInfoId(id)
                 adapter.updateData(listOfPhone)
                 val uri = Uri.fromParts("tel", phone.phone, null)
+                telecomManager = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
                 telecomManager.placeCall(uri, Bundle())
                 if ((CallManager.currentPosition+3) < (listOfPhone.size)) {
                     if (CallManager.currentPosition <= 3){
@@ -350,13 +413,13 @@ class PhoneListActivity : AppCompatActivity() {
                 setupRv()
                 binding.countTv.setText("Phone List (${listOfPhone.size}/${listOfPhone.size})")
                 if (!Providers.isSchedule) {
+                    finish()
                     val i = Intent(this, PhoneListActivity::class.java)
                     i.putExtra("id", id)
                     startActivity(i)
-                    finish()
                 }else{
-                    Providers.startSchedule(this);
                     finish()
+                    Providers.startSchedule(this);
                 }
 
             }
@@ -615,16 +678,15 @@ class PhoneListActivity : AppCompatActivity() {
         val fileData = dbHelper.getFileInfoById(id)
         // Create a StringBuilder to construct the text file content
         val stringBuilder = StringBuilder()
-        stringBuilder.append("\t\t\t${fileData?.fileName}")
+        stringBuilder.append("\t\t\t${fileData?.fileName}\n")
         // Iterate through each lead and format it according to the specified format
         leads.forEachIndexed { index, lead ->
-            stringBuilder.append("Lead ${index + 1}\u0000\n")
-            stringBuilder.append("Cell Number: ${lead.cell}\n")
+            stringBuilder.append("Lead ${index + 1}\n")
             stringBuilder.append("Name: ${lead.name} ${lead.lastName}\n")
             stringBuilder.append("Address: ${lead.address}, ${lead.suburb}, ${lead.state}\n")
             if (lead.calledTime != "" && lead.calledTime.isNotEmpty()) {
                 stringBuilder.append("Date: ${adapter.formatDate(lead.calledTime.toLong())}\n")
-            }else {
+            } else {
                 stringBuilder.append("Date: N/A\n")
             }
             stringBuilder.append("Notes: ${lead.note}\n\n")
@@ -643,6 +705,7 @@ class PhoneListActivity : AppCompatActivity() {
         // Share the file
         shareFile(this, file)
     }
+
 
     private fun shareFile(context: Context, file: File) {
         val uri = FileProvider.getUriForFile(context, context.packageName + ".provider", file)
@@ -698,6 +761,36 @@ class PhoneListActivity : AppCompatActivity() {
 
     fun setupLeadCount(){
         binding.leadsCountTv.setText("Leads count: " + dbHelper.countLeadsInFile(id.toLong()).toString())
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Providers.scheduler = null
+        Providers.isSchedule = false
+        Providers.currentScheduleIndex = 0
+    }
+
+    fun makeCallFromIndex( position: Int) {
+        val posi = position + 1
+        CallManager.currentPosition = posi
+        pause()
+        CallManager.isContinue = true
+        CallManager.currentPosition = SharedPreferenceManager.getCallStatus(this, id)
+        startCall()
+        binding.startBtn.setText("Show Progress")
+        setupButton()
+    }
+
+    fun pause(){
+        CallManager.reject()
+        processCallDialog?.dismiss()
+        setupRv()
+        savePauseStatus()
+        setupPasueStatus()
+        CallManager.isTakeNote =  false
+        Providers.scheduler = null
+        Providers.isSchedule = false
+        Providers.currentScheduleIndex = 0
     }
 
 }

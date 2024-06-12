@@ -78,6 +78,10 @@ object SharedPreferenceManager {
             data = sharedPreferences.getString(button, "Wrong Number")!!
         }else if (button.equals("button4")){
             data = sharedPreferences.getString(button, "Lead")!!
+        }else if (button.equals("button5")){
+            data = sharedPreferences.getString(button, "New button 5")!!
+        }else if (button.equals("button6")){
+            data = sharedPreferences.getString(button, "New button 6")!!
         }else if (button.equals("buttonMsg1")){
             data = sharedPreferences.getString(button, "Message1")!!
         }else if (button.equals("buttonMsg2")){
@@ -102,6 +106,10 @@ object SharedPreferenceManager {
             data = sharedPreferences.getString(button, "Wrong Number")!!
         }else if (button.equals("button4-msg")){
             data = sharedPreferences.getString(button, "Lead")!!
+        }else if (button.equals("button5-msg")){
+            data = sharedPreferences.getString(button, "New button5 Msg")!!
+        }else if (button.equals("button6-msg")){
+            data = sharedPreferences.getString(button, "New button6 Msg")!!
         }else if (button.equals("buttonMsg1-msg")){
             data = sharedPreferences.getString(button, "Message1")!!
         }else if (button.equals("buttonMsg2-msg")){

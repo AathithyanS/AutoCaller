@@ -1,7 +1,8 @@
 package com.fiverr.autocaller.RvAdapter
 
-import android.os.Build
-import android.telephony.SmsManager
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,6 @@ import com.fiverr.autocaller.R
 import com.fiverr.autocaller.model.PhoneAccount
 import com.fiverr.autocaller.util.CallManager
 import com.fiverr.autocaller.util.SharedPreferenceManager
-import com.fiverr.autocaller.util.Util
 import com.fiverr.autocaller.util.Util.Companion.removeStringsFromLongString
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -54,7 +54,7 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
         if (data.address.isEmpty()) {
             holder.statusTv.setText(holder.statusTv.text.toString()+"\nAddress: N/A")
         }else{
-            holder.statusTv.setText(holder.statusTv.text.toString()+"\nAddress: "+data.address)
+            holder.statusTv.setText(holder.statusTv.text.toString()+"\nAddress: "+data.address+", ${data.suburb}, ${data.state}")
         }
         if (data.calledTime.isEmpty()) {
             holder.statusTv.setText(holder.statusTv.text.toString()+"\nDate: N/A")
@@ -99,8 +99,37 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
             }
         }
 
+        holder.callIv.setOnClickListener {
+            openCallConfirmationDialog(data, position)
+        }
+
         if (position == pausedPosition) {
             holder.phoneCl.setBackgroundColor(context.resources.getColor(R.color.blue)) // Set background color to blue
+        }
+    }
+
+    private fun openCallConfirmationDialog(data: PhoneAccount, position: Int) {
+        val builder = AlertDialog.Builder(context)
+        val dialogView = context.layoutInflater.inflate(R.layout.call_confirmation_card, null)
+        builder.setView(dialogView)
+        val confirmationDialog = builder.create()
+        confirmationDialog?.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent);
+        confirmationDialog?.show()
+
+        val callMsgTv = confirmationDialog?.findViewById<TextView>(R.id.callConfirmTv)
+        val callBtn = confirmationDialog?.findViewById<Button>(R.id.callConfirmCallBtn)
+        val cancelBtn = confirmationDialog?.findViewById<Button>(R.id.callConfirmCancelBtn)
+
+        callMsgTv?.setText("Make sure to call: \n${data.phone}\n" +
+                "${data.name}\n" +
+                "${data.address}")
+
+        cancelBtn?.setOnClickListener {
+            confirmationDialog.dismiss()
+        }
+        callBtn?.setOnClickListener {
+            context.makeCallFromIndex(position)
+            confirmationDialog.dismiss()
         }
     }
 
@@ -121,11 +150,13 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
         val n2Btn = updateNoteDialog?.findViewById<Button>(R.id.eNoteBtn2)
         val n3Btn = updateNoteDialog?.findViewById<Button>(R.id.eNoteBtn3)
         val n4Btn = updateNoteDialog?.findViewById<Button>(R.id.eNoteBtn4)
+        val n5Btn = updateNoteDialog?.findViewById<Button>(R.id.eNoteBtn5)
+        val n6Btn = updateNoteDialog?.findViewById<Button>(R.id.eNoteBtn6)
 
         updateTitle?.setText("Update Note\n" +
                 "Phone: ${data.phone}\n" +
                 "Fullname: ${data.name +" "+ data.lastName} \n" +
-                "Address: ${data.address}")
+                "Address: ${data.address}, ${data.suburb}, ${data.state}")
 
         NoteEt?.setText(data.note)
         updateBtn?.setOnClickListener {
@@ -144,15 +175,21 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
         n2Btn?.setText(SharedPreferenceManager.getCustomButton(context, "button2"))
         n3Btn?.setText(SharedPreferenceManager.getCustomButton(context, "button3"))
         n4Btn?.setText(SharedPreferenceManager.getCustomButton(context, "button4"))
+        n5Btn?.setText(SharedPreferenceManager.getCustomButton(context, "button5"))
+        n6Btn?.setText(SharedPreferenceManager.getCustomButton(context, "button6"))
 
         val btn1Color = SharedPreferenceManager.getCustomButtonColor(context, "button1-color")
         val btn2Color = SharedPreferenceManager.getCustomButtonColor(context, "button2-color")
         val btn3Color = SharedPreferenceManager.getCustomButtonColor(context, "button3-color")
         val btn4Color = SharedPreferenceManager.getCustomButtonColor(context, "button4-color")
+        val btn5Color = SharedPreferenceManager.getCustomButtonColor(context, "button5-color")
+        val btn6Color = SharedPreferenceManager.getCustomButtonColor(context, "button6-color")
         n1Btn?.setBackgroundColor(btn1Color)
         n2Btn?.setBackgroundColor(btn2Color)
         n3Btn?.setBackgroundColor(btn3Color)
         n4Btn?.setBackgroundColor(btn4Color)
+        n5Btn?.setBackgroundColor(btn5Color)
+        n6Btn?.setBackgroundColor(btn6Color)
 
 
         n1Btn?.setOnClickListener {
@@ -162,6 +199,8 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button2"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button3"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button6"))
             val removedText = removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
             NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "button1")+" "+removedText)
             NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
@@ -173,6 +212,8 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button2"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button3"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button6"))
             val removedText = removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
             NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "button2")+" "+removedText)
             NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
@@ -184,6 +225,8 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button2"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button3"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button6"))
             val removedText = removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
             NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "button3")+" "+removedText)
             NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
@@ -195,8 +238,36 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button2"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button3"))
             btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button6"))
             val removedText = removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
             NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "button4")+" "+removedText)
+            NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
+        }
+        n5Btn?.setOnClickListener {
+            noteBtnId = "button5"
+            val btnTextList = ArrayList<String>()
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button1"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button2"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button3"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button6"))
+            val removedText = removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
+            NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "button5")+" "+removedText)
+            NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
+        }
+        n6Btn?.setOnClickListener {
+            noteBtnId = "button6"
+            val btnTextList = ArrayList<String>()
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button1"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button2"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button3"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button4"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button5"))
+            btnTextList.add(SharedPreferenceManager.getCustomButtonMsg(context, "button6"))
+            val removedText = removeStringsFromLongString(btnTextList, NoteEt!!.text.toString())
+            NoteEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "button6")+" "+removedText)
             NoteEt?.setSelection(NoteEt?.text?.length ?: 0)
         }
         n1Btn?.setOnLongClickListener {
@@ -213,6 +284,14 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
         }
         n4Btn?.setOnLongClickListener {
             context.showUpdateCustomButton("button4", n4Btn, btn4Color)
+            true
+        }
+        n5Btn?.setOnLongClickListener {
+            context.showUpdateCustomButton("button5", n5Btn, btn4Color)
+            true
+        }
+        n6Btn?.setOnLongClickListener {
+            context.showUpdateCustomButton("button6", n6Btn, btn4Color)
             true
         }
 
@@ -253,15 +332,15 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
             messageEt?.setSelection(messageEt?.text?.length ?: 0)
         }
         n2Btn?.setOnClickListener {
-            messageEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "buttonMsg1"))
+            messageEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "buttonMsg2"))
             messageEt?.setSelection(messageEt?.text?.length ?: 0)
         }
         n3Btn?.setOnClickListener {
-            messageEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "buttonMsg1"))
+            messageEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "buttonMsg3"))
             messageEt?.setSelection(messageEt?.text?.length ?: 0)
         }
         n4Btn?.setOnClickListener {
-            messageEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "buttonMsg1"))
+            messageEt?.setText(SharedPreferenceManager.getCustomButtonMsg(context, "buttonMsg4"))
             messageEt?.setSelection(messageEt?.text?.length ?: 0)
         }
         n1Btn?.setOnLongClickListener {
@@ -294,6 +373,7 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
         val countStatTv = itemView.findViewById<TextView>(R.id.countStatTv)
         val noteEditIv = itemView.findViewById<ImageView>(R.id.noteEditIv)
         val sendMsgIv = itemView.findViewById<ImageView>(R.id.sendMsgIv)
+        val callIv = itemView.findViewById<ImageView>(R.id.callIv)
     }
 
 
@@ -306,25 +386,20 @@ class PhoneRvAdapter(val phoneList: ArrayList<PhoneAccount>, val context: PhoneL
 
 
     fun sendSms(phoneNumber: String, message: String = "", msgDialog: AlertDialog) {
-        val smsManager: SmsManager
-        if (Build.VERSION.SDK_INT>=23) {
-            //if SDK is greater that or equal to 23 then
-            //this is how we will initialize the SmsManager
-            smsManager = context.getSystemService(SmsManager::class.java)
-        }
-        else{
-            //if user's SDK is less than 23 then
-            //SmsManager will be initialized like this
-            smsManager = SmsManager.getDefault()
+        val smsUri = Uri.parse("smsto:$phoneNumber")
+        val intent = Intent(Intent.ACTION_SENDTO, smsUri)
+        intent.putExtra("sms_body", message)
+
+        try {
+            context.startActivity(intent)
+            Toast.makeText(context, "Opening messaging app", Toast.LENGTH_LONG).show()
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, "No messaging app found", Toast.LENGTH_LONG).show()
         }
 
-        // on below line we are sending text message.
-        smsManager.sendTextMessage(phoneNumber, null, message, null, null)
-
-        // on below line we are displaying a toast message for message send,
-        Toast.makeText(context, "Message Sent", Toast.LENGTH_LONG).show()
         msgDialog.dismiss()
     }
+
 
     fun setupPause(index: Int) {
         pausedPosition = index

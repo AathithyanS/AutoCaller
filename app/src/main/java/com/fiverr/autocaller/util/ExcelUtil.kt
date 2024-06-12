@@ -115,7 +115,9 @@ object ExcelUtil {
                 date = date + " "
             }
             val row: Row = sheet.createRow(rowNum++)
-            row.createCell(0).setCellValue((rowNum - 1).toString())
+//            row.createCell(0).setCellValue((rowNum-1).toString())
+
+            row.createCell(0).setCellValue(phoneAccount.cell.toFloat().toInt().toString())
             row.createCell(1).setCellValue(phoneAccount.name)
             row.createCell(2).setCellValue(phoneAccount.lastName)
             row.createCell(3).setCellValue(phoneAccount.phone)

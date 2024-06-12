@@ -18,7 +18,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="+9177123456"
-            app:layout_constraintEnd_toStartOf="@+id/sendMsgIv"
+            app:layout_constraintEnd_toStartOf="@+id/callIv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,6 +64,16 @@
             app:layout_constraintEnd_toStartOf="@+id/noteEditIv"
             app:layout_constraintTop_toTopOf="@+id/noteEditIv"
             app:srcCompat="@drawable/ic_messages" />
+
+        <ImageView
+            android:id="@+id/callIv"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/sendMsgIv"
+            app:layout_constraintEnd_toStartOf="@+id/sendMsgIv"
+            app:layout_constraintTop_toTopOf="@+id/sendMsgIv"
+            app:srcCompat="@drawable/ic_call" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

@@ -44,7 +44,7 @@
             android:id="@+id/updateNoteBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="220dp"
             android:layout_marginBottom="25dp"
             android:text="Update note"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -54,9 +54,11 @@
 
         <Button
             android:id="@+id/eNoteBtn1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
             android:text="Not Interested"
             app:layout_constraintEnd_toStartOf="@+id/eNoteBtn2"
             app:layout_constraintHorizontal_bias="0.5"
@@ -65,8 +67,9 @@
 
         <Button
             android:id="@+id/eNoteBtn2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:text="Not The Owner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -75,9 +78,11 @@
 
         <Button
             android:id="@+id/eNoteBtn3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
             android:text="Wrong Number"
             app:layout_constraintEnd_toStartOf="@+id/eNoteBtn4"
             app:layout_constraintHorizontal_bias="0.5"
@@ -86,12 +91,38 @@
 
         <Button
             android:id="@+id/eNoteBtn4"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
             android:text="Lead"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/eNoteBtn3"
             app:layout_constraintTop_toTopOf="@+id/eNoteBtn3" />
+
+        <Button
+            android:id="@+id/eNoteBtn5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:text="Button 5"
+            app:layout_constraintEnd_toStartOf="@+id/eNoteBtn6"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eNoteBtn3" />
+
+        <Button
+            android:id="@+id/eNoteBtn6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="Button 6"
+            app:layout_constraintBottom_toBottomOf="@+id/eNoteBtn5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/eNoteBtn5"
+            app:layout_constraintTop_toTopOf="@+id/eNoteBtn5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

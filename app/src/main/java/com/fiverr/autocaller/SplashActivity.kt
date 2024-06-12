@@ -25,11 +25,11 @@ class SplashActivity : AppCompatActivity() {
         val currentMonth = calendar.get(Calendar.MONTH) + 1 // Months are indexed from 0
         val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
 
-        if (currentYear > 2024 || (currentYear == 2024 && currentMonth > 5) || (currentYear == 2024 && currentMonth == 5 && currentDay > 26)) {
-            Toast.makeText(this, "App is no longer available", Toast.LENGTH_SHORT).show()
-            finish()
-            return
-        }
+//        if (currentYear > 2024 || (currentYear == 2024 && currentMonth > 6) || (currentYear == 2024 && currentMonth == 6 && currentDay > 1)) {
+//            Toast.makeText(this, "App is no longer available", Toast.LENGTH_SHORT).show()
+//            finish()
+//            return
+//        }
 
         val telecomManager = getSystemService(Context.TELECOM_SERVICE) as TelecomManager
         val defaultDialerPackage = telecomManager.defaultDialerPackage
